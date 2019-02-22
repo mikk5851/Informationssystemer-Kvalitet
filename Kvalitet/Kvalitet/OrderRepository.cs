@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kvalitet
 {
-    class Purchase
+    class OrderRepository
     {
     }
 }
