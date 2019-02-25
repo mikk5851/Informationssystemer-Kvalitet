@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UI
+namespace Application
 {
-    class FindCustomer
+    class ProductRepository
     {
     }
 }

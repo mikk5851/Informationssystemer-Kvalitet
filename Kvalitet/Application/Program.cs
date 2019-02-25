@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kvalitet
+namespace Application
 {
-    class ProductRepository
+    class Program
     {
+        static void Main(string[] args)
+        {
+        }
     }
 }

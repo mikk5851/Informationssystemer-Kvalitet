@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kvalitet
+namespace Application
 {
-    class Customer
+    class Controller
     {
     }
 }
