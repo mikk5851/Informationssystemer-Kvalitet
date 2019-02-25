@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Application
 {
-    class Controller
+    public class Controller
     {
+        ProductRepository ProductRepository;
+        OrderRepository OrderRepository;
+        CustomerRepository CustomerRepository;
+
+        public void RecieveOrder()
+        {
+
+        }
     }
 }

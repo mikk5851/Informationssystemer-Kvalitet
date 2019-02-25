@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    class SalesOrderLine
+    public class SalesOrderLine
     {
+        public Product Product;
+        public int Quantity;
+        public double Price;
+
+
     }
 }

@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    class Customer
+    public enum Status : byte
     {
+        Nothing,
+        Alter,
+        Create,
+        Delete
+    }
+    public class Customer 
+    {
+        public int CustomerID;
+        public string Name;
+        public string Address;
+        public int ZIP;
+        public string Town;
+        public int Telephone;
+        public Status status;
+
     }
 }
