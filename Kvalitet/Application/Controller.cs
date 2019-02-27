@@ -8,9 +8,14 @@ namespace Application
 {
     public class Controller
     {
-        ProductRepository ProductRepository;
-        OrderRepository OrderRepository;
-        CustomerRepository CustomerRepository;
+        public static readonly Controller GetController;
+
+        static Controller()
+        {
+            GetController = new Controller();
+        }
+
+        private Controller() { }
 
         public void RecieveOrder()
         {

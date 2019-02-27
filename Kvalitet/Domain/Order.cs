@@ -17,6 +17,10 @@ namespace Domain
         public DateTime DeliveryDate;
         public bool Picked;
 
+        public Order(int id)
+        {
+            OrderID = id;
+        }
         public void AddOrderLine(Product product, int quantity, double price)
         {
 

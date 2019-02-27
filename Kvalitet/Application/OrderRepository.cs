@@ -9,25 +9,33 @@ namespace Application
 {
     public class OrderRepository
     {
-        public class ProductRepository : Order
+        
+        
+        public static readonly OrderRepository GetOrderRepository;
+        private List<Order> orders = new List<Order>();
+
+        static OrderRepository()
         {
-            private List<Order> orders = new List<Order>();
-
-            /*/ public Order GetOrder(int ID)
-             {
-
-             }
-             /*/
-
-            public void AddOrder(Order order, Customer customer, int ID, DateTime orderdate, DateTime deliverydate, bool picked)
-            {
-
-            }
-
-            public void Clear()
-            {
-
-            }
+            GetOrderRepository = new OrderRepository();
         }
+
+        private OrderRepository() { }
+
+        public Order GetOrder(int ID)
+        {
+            throw new NotImplementedException();
+        }
+            
+
+        public void AddOrder(Order order, Customer customer, int ID, DateTime orderdate, DateTime deliverydate, bool picked)
+        {
+
+        }
+
+        public void Clear()
+        {
+
+        }
+        
     }
 }
