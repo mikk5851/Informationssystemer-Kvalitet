@@ -21,26 +21,42 @@ namespace Application
 
         private OrderRepository() { }
 
-        public Order GetOrder(int ID)
+        public Order GetOrder(int iD)
         {
-            throw new NotImplementedException();
-        }
-            
+            foreach (Order order in orders)
+            {
+                if (iD == order.ID)
+                {
+                    return order;
+                }
 
-        public void AddOrder(Order order, Customer customer, int ID, DateTime orderdate, DateTime deliverydate, bool picked)
+
+            }
+
+            throw new ArgumentException($"order with id {iD} not found");
+        }
+
+
+        public void AddOrder(Order order)
+
         {
+            Order ord = new Order(order);
+            orders.Add(ord);
+        }
+
+        public void AddOrder(Customer cus, int iD, DateTime orderdate, DateTime deliverydate, bool picked)
+        {
+            Order ord = new Order(cus, iD, orderdate, deliverydate, picked);
+            orders.Add(ord);
 
         }
 
         public void Clear()
         {
-
+            orders.Clear();
         }
 
-        public IEnumerator<Order> GetEnumerator()
-        {
-            return orders.GetEnumerator();
-        }
-        
+
+
     }
 }
