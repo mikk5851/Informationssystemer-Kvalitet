@@ -58,15 +58,9 @@ namespace Domain
         }
 
 
-        public List<SaleOrderLine> GetOrderLines()
+        public IEnumerator<SaleOrderLine> GetEnumerator()
         {
-            List<SaleOrderLine> Temp = new List<SaleOrderLine>();
-            foreach (SaleOrderLine orderLine in OrderLines)
-            {
-                Temp.Add(orderLine);
-            }
-
-            return Temp;
+            return OrderLines.GetEnumerator();
         }
 
 
