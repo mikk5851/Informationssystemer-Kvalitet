@@ -8,6 +8,7 @@ namespace Domain
 {
     public class SaleOrderLine
     {
+        public Status status;
         public Product Product;
         public int Quantity;
         public double Price;

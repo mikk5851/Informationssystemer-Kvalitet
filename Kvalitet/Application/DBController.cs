@@ -148,6 +148,78 @@ namespace Application
                 }
                 catch (SqlException e) { throw e; }
 
+                try
+                {
+                    IEnumerator<Customer> enumerator = CustomerRepository.GetCustomerRepository.GetEnumerator();
+                    while (enumerator.MoveNext())
+                    {
+                        Customer cus = enumerator.Current;
+                        switch (cus.status)
+                        {
+                            case Status.Nothing:
+                                break;
+                            case Status.Alter:
+                                AlterCustomer(cus, connection);
+                                break;
+                            case Status.Create:
+                                CreateCustomer(cus, connection);
+                                break;
+                            case Status.Delete:
+                                DeleteCustomer(cus, connection);
+                                break;
+                            default:
+                                throw new FormatException($"Unknown status {cus.status}");
+                        }
+                    }
+                }
+                catch (SqlException e) { throw e; }
+
+                try
+                {
+                    IEnumerator<Order> enumerator = OrderRepository.GetOrderRepository.GetEnumerator();
+                    while (enumerator.MoveNext())
+                    {
+                        Order order = enumerator.Current;
+                        switch (order.status)
+                        {
+                            case Status.Nothing:
+                                break;
+                            case Status.Alter:
+                                AlterOrder(order, connection);
+                                break;
+                            case Status.Create:
+                                CreateOrder(order, connection);
+                                break;
+                            case Status.Delete:
+                                DeleteOrder(order, connection);
+                                break;
+                            default:
+                                throw new FormatException($"Unknown status {order.status}");
+                        }
+                        IEnumerator<SaleOrderLine> enumerator2 = order.GetEnumerator();
+                        while (enumerator2.MoveNext())
+                        {
+                            SaleOrderLine line = enumerator2.Current;
+                            switch (line.status)
+                            {
+                                case Status.Nothing:
+                                    break;
+                                case Status.Alter:
+                                    AlterSaleOrderLine(line, connection);
+                                    break;
+                                case Status.Create:
+                                    CreateSaleOrderLine(line, connection);
+                                    break;
+                                case Status.Delete:
+                                    DeleteSaleOrderLine(line, connection);
+                                    break;
+                                default:
+                                    throw new FormatException($"Unknown status {line.status}");
+                            }
+                        }
+                    }
+                }
+                catch (SqlException e) { throw e; }
             }
         }
 
