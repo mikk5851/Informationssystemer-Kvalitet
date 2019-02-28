@@ -220,6 +220,7 @@ namespace Application
                     }
                 }
                 catch (SqlException e) { throw e; }
+                connection.Close();
             }
         }
 
