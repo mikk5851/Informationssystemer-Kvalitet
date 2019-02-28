@@ -64,8 +64,7 @@ namespace Application
                         bool picked2;
                         if(picked1 == 0) { picked2 = false; }
                         else { picked2 = true; }
-                        Customer cus = CustomerRepository.GetCustomerRepository.GetCustomer(cusId);
-                        Order order = new Order(cus, orderId, orderDate, deliveryDate, picked2);
+                        Order order = new Order(cusId, orderId, orderDate, deliveryDate, picked2);
                         OrderRepository.GetOrderRepository.AddOrder(order);
                     }
                     reader.Close();
@@ -96,7 +95,7 @@ namespace Application
                     SqlCommand cmd = new SqlCommand("[SP_GetOrderLines]", connection);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = cmd.ExecuteReader();
-                    Order order = new Order(default(Customer), 0, default(DateTime), default(DateTime), default(bool));
+                    Order order = new Order(0);
                     while (reader.Read())
                     {
                         int orderID = (int)reader["[OrderNumber]"];
@@ -128,87 +127,154 @@ namespace Application
                     while (enumerator.MoveNext())
                     {
                         Product product = enumerator.Current;
-                        switch (product.status)
-                        {
-                            case Status.Nothing:
-                                break;
-                            case Status.Alter:
-                                AlterProduct(product, connection);
-                                break;
-                            case Status.Create:
-                                CreateProduct(product, connection);
-                                break;
-                            case Status.Delete:
-                                DeleteProduct(product, connection);
-                                break;
-                            default:
-                                throw new FormatException($"Unknown status {product.status}");
-                        }
+
                     }
                 }
                 catch (SqlException e) { throw e; }
 
             }
+
+
         }
 
-        private void AlterProduct(Product product, SqlConnection connection)
+        private void CreateProduct(Product product)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("[SP_CreateProduct]", connection);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@SupplierID", 0));
+                    cmd.Parameters.Add(new SqlParameter("@Name", product.Name));
+                    cmd.Parameters.Add(new SqlParameter("@Description", product.Description));
+                    cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
+                    cmd.Parameters.Add(new SqlParameter("@MinInStock", product.MinInStock));
+
+                    cmd.ExecuteNonQuery();
+
+
+                }
+
+
+                catch (SqlException e) { throw e; }
+            }
+
+        }
+
+        private void DeleteProduct(Product product)
         {
 
+            try
+            {
+                SqlCommand cmd = new SqlCommand("[SP_DeleteProduct]", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Barcode", 0));
+
+
+
+                cmd.ExecuteNonQuery();
+
+            }
+
+            catch (SqlException e) { throw e; }
         }
 
-        private void CreateProduct(Product product, SqlConnection connection)
+        private void AlterProduct(Product product)
         {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("[SP_UpdateProduct]", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Barcode", 0));
+                cmd.Parameters.Add(new SqlParameter("@SupplierID", 0));
+                cmd.Parameters.Add(new SqlParameter("@Name", product.Name));
+                cmd.Parameters.Add(new SqlParameter("@Description", product.Description));
+                cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
+                cmd.Parameters.Add(new SqlParameter("@MinInStock", product.MinInStock));
 
+                cmd.ExecuteNonQuery();
+
+
+            }
+
+
+            catch (SqlException e) { throw e; }
         }
 
-        private void DeleteProduct(Product product, SqlConnection connection)
-        {
-
-        }
-
-        private void AlterOrder(Order order, SqlConnection connection)
-        {
-
-        }
-
-        private void CreateOrder(Order order, SqlConnection connection)
-        {
-
-        }
-
-        private void DeleteOrder(Order order, SqlConnection connection)
-        {
-
-        }
-
-        private void AlterCustomer(Customer customer, SqlConnection connection)
-        {
-
-        }
-
-        private void CreateCustomer(Customer customer, SqlConnection connection)
-        {
-
-        }
-
-        private void DeleteCustomer(Customer customer, SqlConnection connection)
-        {
-
-        }
-
-        private void AlterSaleOrderLine(SaleOrderLine line, SqlConnection connection)
-        {
-
-        }
-
-        private void CreateSaleOrderLine(SaleOrderLine line, SqlConnection connection)
-        {
-
-        }
-
-        private void DeleteSaleOrderLine(SaleOrderLine line, SqlConnection connection)
-        {
-
-        }
     }
+
+
+        private void AlterOrder(Order order)
+        {
+       
+        }
+
+        private void CreateOrder(Order order)
+        {
+
+           try
+           {
+            SqlCommand cmd = new SqlCommand("[SP_CreateOrder]", connection);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@CustomerID", 0));
+            cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
+            cmd.Parameters.Add(new SqlParameter("@DeliveryDate", order.DeliveryDate));
+            cmd.Parameters.Add(new SqlParameter("@Picked", order.Picked));
+
+
+
+
+            cmd.ExecuteNonQuery();
+
+
+           }
+
+
+               catch (SqlException e) { throw e; }
+
+
+        }
+
+        private void DeleteOrder(Order order)
+        {
+
+        }
+
+        private void AlterCustomer(Customer customer)
+        {
+
+        }
+
+        private void CreateCustomer(Customer customer)
+        {
+      
+            try
+            {
+                SqlCommand cmd = new SqlCommand("[SP_CreateCustomer]", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Name", customer.Name));
+                cmd.Parameters.Add(new SqlParameter("@Address", customer.Address));
+                cmd.Parameters.Add(new SqlParameter("@ZipCode", customer.ZIP));
+                cmd.Parameters.Add(new SqlParameter("@Telephone", customer.Telephone));
+
+
+
+
+                cmd.ExecuteNonQuery();
+
+
+            }
+
+
+            catch (SqlException e) { throw e; }
+        }
+
+        private void DeleteCustomer(Customer customer)
+        {
+
+        }
+    
+
 }
