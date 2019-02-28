@@ -33,5 +33,10 @@ namespace Application
         {
 
         }
+
+        public IEnumerator<Customer> GetEnumerator()
+        {
+            return customers.GetEnumerator();
+        }
     }
 }

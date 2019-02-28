@@ -36,6 +36,11 @@ namespace Application
         {
 
         }
+
+        public IEnumerator<Order> GetEnumerator()
+        {
+            return orders.GetEnumerator();
+        }
         
     }
 }

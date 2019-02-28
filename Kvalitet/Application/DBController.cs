@@ -112,12 +112,27 @@ namespace Application
                     reader.Close();
                 }
                 catch (SqlException e) { throw e; }
+                connection.Close();
             }
         }
 
         public void UpdateDB()
         {
+            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                try
+                {
+                    IEnumerator<Product> enumerator = ProductRepository.GetProductRepository.GetEnumerator();
+                    while (enumerator.MoveNext())
+                    {
+                        Product product = enumerator.Current;
 
+                    }
+                }
+                catch (SqlException e) { throw e; }
+
+            }
         }
 
         private void AlterProduct(Product product)
