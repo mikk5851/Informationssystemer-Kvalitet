@@ -56,5 +56,9 @@ namespace Application
             }
         }
 
+        public IEnumerator<Product> GetEnumerator()
+        {
+            return products.GetEnumerator();
+        }
     }
 }

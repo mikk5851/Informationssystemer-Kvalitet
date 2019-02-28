@@ -64,7 +64,8 @@ namespace Application
                         bool picked2;
                         if(picked1 == 0) { picked2 = false; }
                         else { picked2 = true; }
-                        Order order = new Order(cusId, orderId, orderDate, deliveryDate, picked2);
+                        Customer cus = CustomerRepository.GetCustomerRepository.GetCustomer(cusId);
+                        Order order = new Order(cus, orderId, orderDate, deliveryDate, picked2);
                         OrderRepository.GetOrderRepository.AddOrder(order);
                     }
                     reader.Close();
@@ -95,7 +96,7 @@ namespace Application
                     SqlCommand cmd = new SqlCommand("[SP_GetOrderLines]", connection);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = cmd.ExecuteReader();
-                    Order order = new Order(0);
+                    Order order = new Order(default(Customer), 0, default(DateTime), default(DateTime), default(bool));
                     while (reader.Read())
                     {
                         int orderID = (int)reader["[OrderNumber]"];
@@ -127,7 +128,22 @@ namespace Application
                     while (enumerator.MoveNext())
                     {
                         Product product = enumerator.Current;
-
+                        switch (product.status)
+                        {
+                            case Status.Nothing:
+                                break;
+                            case Status.Alter:
+                                AlterProduct(product, connection);
+                                break;
+                            case Status.Create:
+                                CreateProduct(product, connection);
+                                break;
+                            case Status.Delete:
+                                DeleteProduct(product, connection);
+                                break;
+                            default:
+                                throw new FormatException($"Unknown status {product.status}");
+                        }
                     }
                 }
                 catch (SqlException e) { throw e; }
@@ -135,47 +151,62 @@ namespace Application
             }
         }
 
-        private void AlterProduct(Product product)
+        private void AlterProduct(Product product, SqlConnection connection)
         {
 
         }
 
-        private void CreateProduct(Product product)
+        private void CreateProduct(Product product, SqlConnection connection)
         {
 
         }
 
-        private void DeleteProduct(Product product)
+        private void DeleteProduct(Product product, SqlConnection connection)
         {
 
         }
 
-        private void AlterOrder(Order order)
+        private void AlterOrder(Order order, SqlConnection connection)
         {
 
         }
 
-        private void CreateOrder(Order order)
+        private void CreateOrder(Order order, SqlConnection connection)
         {
 
         }
 
-        private void DeleteOrder(Order order)
+        private void DeleteOrder(Order order, SqlConnection connection)
         {
 
         }
 
-        private void AlterCustomer(Customer customer)
+        private void AlterCustomer(Customer customer, SqlConnection connection)
         {
 
         }
 
-        private void CreateCustomer(Customer customer)
+        private void CreateCustomer(Customer customer, SqlConnection connection)
         {
 
         }
 
-        private void DeleteCustomer(Customer customer)
+        private void DeleteCustomer(Customer customer, SqlConnection connection)
+        {
+
+        }
+
+        private void AlterSaleOrderLine(SaleOrderLine line, SqlConnection connection)
+        {
+
+        }
+
+        private void CreateSaleOrderLine(SaleOrderLine line, SqlConnection connection)
+        {
+
+        }
+
+        private void DeleteSaleOrderLine(SaleOrderLine line, SqlConnection connection)
         {
 
         }

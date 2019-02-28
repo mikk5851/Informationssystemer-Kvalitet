@@ -56,7 +56,10 @@ namespace Application
             orders.Clear();
         }
 
-
+        public IEnumerator<Order> GetEnumerator()
+        {
+            return orders.GetEnumerator();
+        }
 
     }
 }
