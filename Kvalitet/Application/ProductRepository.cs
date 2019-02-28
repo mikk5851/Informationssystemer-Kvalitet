@@ -19,20 +19,42 @@ namespace Application
         }
         private ProductRepository() { }
 
-        public Product GetProduct(int ID)
+        public Product GetProduct(int iD)
         {
-            throw new NotImplementedException();
+            foreach (Product product in products)
+            {
+                if (iD == product.ID)
+                {
+                    return product;
+                }
+            }
+
+            throw new ArgumentException($"Product with id {iD} not found");
         }
 
-        public void AddProduct(Product product, int ID, string name, string description, double price, int mininstock)
+
+
+        public void AddProduct(Product product)
         {
+            Product prod = new Product(product);
+            products.Add(prod);
+        }
+
+
+        public void AddProduct(int iD, string name, string description, double price, int mininstock)
+        {
+            Product prod = new Product(iD, name, description, price, mininstock);
+            products.Add(prod);
 
         }
 
         public void Clear()
         {
 
+            {
+                products.Clear();
+            }
         }
-        
+
     }
 }

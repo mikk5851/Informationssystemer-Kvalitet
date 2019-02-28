@@ -13,7 +13,7 @@ namespace Domain
         Create,
         Delete
     }
-    public class Customer 
+    public class Customer
     {
         public int CustomerID;
         public string Name;
@@ -22,6 +22,24 @@ namespace Domain
         public string Town;
         public int Telephone;
         public Status status;
+        private Customer customer;
+        public int ID;
 
+        public Customer(Customer customer)
+        {
+            this.customer = customer;
+            status = Status.Create;
+        }
+
+        public Customer(int iD, string name, string address, int zIP, string town, int telephone)
+        {
+            this.ID = iD;
+            Name = name;
+            Address = address;
+            ZIP = zIP;
+            Town = town;
+            Telephone = telephone;
+            status = Status.Create;
+        }
     }
 }

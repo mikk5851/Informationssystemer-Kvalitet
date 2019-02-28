@@ -19,19 +19,35 @@ namespace Application
 
         private CustomerRepository() { }
 
-        public Customer GetCustomer(int ID)
+        public Customer GetCustomer(int iD)
         {
-           throw new NotImplementedException();
+            foreach (Customer customer in customers)
+            {
+                if (iD == customer.ID)
+                {
+                    return customer;
+                }
+            }
+
+            throw new ArgumentException($"Customer with id {iD} not found");
         }
 
-        public void AddCustomer(Customer customer, int ID, string name, string address, int ZIP, string town, int telephone)
+        public void AddCustomer(Customer customer)
         {
+            Customer cus = new Customer(customer);
+            customers.Add(cus);
+        }
 
+        public void AddCustomer(int iD, string name, string address, int ZIP, string town, int telephone)
+        {
+            Customer cus = new Customer(iD, name, address, ZIP, town, telephone);
+            customers.Add(cus);
         }
 
         public void Clear()
         {
-
+            customers.Clear();
         }
     }
 }
+

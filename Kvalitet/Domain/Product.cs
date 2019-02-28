@@ -13,6 +13,35 @@ namespace Domain
         public string Description;
         public double Price;
         public int MinInStock;
+        public Status status;
+        public int ID;
+        public Product product;
+        private int quantity;
+
+        public Product(Product product)
+        {
+            this.product = product;
+            status = Status.Create;
+        }
+
+        public Product(Product product, int quantity, double price) : this(product)
+        {
+            this.quantity = quantity;
+            Price = price;
+        }
+
+        public Product(int iD, string name, string description, double price, int mininstock)
+        {
+            this.ID = iD;
+            Name = name;
+            Description = description;
+            Price = price;
+            MinInStock = mininstock;
+            status = Status.Create;
+        }
+
 
     }
 }
+
+
