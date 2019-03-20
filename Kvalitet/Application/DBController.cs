@@ -26,7 +26,7 @@ namespace Application
 
         public void StartUp()
         {
-            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
                 try
@@ -62,9 +62,10 @@ namespace Application
                         DateTime deliveryDate = (DateTime)reader["[DeliveryDate]"];
                         int picked1 = (int)reader["[Picked]"];
                         bool picked2;
-                        if(picked1 == 0) { picked2 = false; }
+                        if (picked1 == 0) { picked2 = false; }
                         else { picked2 = true; }
-                        Order order = new Order(cusId, orderId, orderDate, deliveryDate, picked2);
+                        Customer cus = CustomerRepository.GetCustomerRepository.GetCustomer(cusId);
+                        Order order = new Order(cus, orderId, orderDate, deliveryDate, picked2);
                         OrderRepository.GetOrderRepository.AddOrder(order);
                     }
                     reader.Close();
@@ -95,14 +96,14 @@ namespace Application
                     SqlCommand cmd = new SqlCommand("[SP_GetOrderLines]", connection);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = cmd.ExecuteReader();
-                    Order order = new Order(0);
+                    Order order = new Order(default(Customer), 0, default(DateTime), default(DateTime), true);
                     while (reader.Read())
                     {
                         int orderID = (int)reader["[OrderNumber]"];
                         int quantity = (int)reader["[Quantity]"];
                         double price = (double)reader["[Price]"];
                         int productID = (int)reader["[ProductID]"];
-                        if(orderID != order.OrderID)
+                        if (orderID != order.OrderID)
                         {
                             order = OrderRepository.GetOrderRepository.GetOrder(orderID);
                         }
@@ -118,7 +119,7 @@ namespace Application
 
         public void UpdateDB()
         {
-            using(SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
                 try
@@ -210,33 +211,29 @@ namespace Application
 
         }
 
-        private void CreateProduct(Product product)
+        private void CreateProduct(Product product, SqlConnection connection)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            try
             {
-                connection.Open();
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("[SP_CreateProduct]", connection);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@SupplierID", 0));
-                    cmd.Parameters.Add(new SqlParameter("@Name", product.Name));
-                    cmd.Parameters.Add(new SqlParameter("@Description", product.Description));
-                    cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
-                    cmd.Parameters.Add(new SqlParameter("@MinInStock", product.MinInStock));
+                SqlCommand cmd = new SqlCommand("[SP_CreateProduct]", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@SupplierID", 0));
+                cmd.Parameters.Add(new SqlParameter("@Name", product.Name));
+                cmd.Parameters.Add(new SqlParameter("@Description", product.Description));
+                cmd.Parameters.Add(new SqlParameter("@Price", product.Price));
+                cmd.Parameters.Add(new SqlParameter("@MinInStock", product.MinInStock));
 
-                    cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
 
-                }
-
-
-                catch (SqlException e) { throw e; }
             }
+
+
+            catch (SqlException e) { throw e; }
 
         }
 
-        private void DeleteProduct(Product product)
+        private void DeleteProduct(Product product, SqlConnection connection)
         {
 
             try
@@ -254,7 +251,7 @@ namespace Application
             catch (SqlException e) { throw e; }
         }
 
-        private void AlterProduct(Product product)
+        private void AlterProduct(Product product, SqlConnection connection)
         {
             try
             {
@@ -276,53 +273,53 @@ namespace Application
             catch (SqlException e) { throw e; }
         }
 
-    }
-
-
-        private void AlterOrder(Order order)
-        {
-       
-        }
-
-        private void CreateOrder(Order order)
-        {
-
-           try
-           {
-            SqlCommand cmd = new SqlCommand("[SP_CreateOrder]", connection);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@CustomerID", 0));
-            cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
-            cmd.Parameters.Add(new SqlParameter("@DeliveryDate", order.DeliveryDate));
-            cmd.Parameters.Add(new SqlParameter("@Picked", order.Picked));
 
 
 
-
-            cmd.ExecuteNonQuery();
-
-
-           }
-
-
-               catch (SqlException e) { throw e; }
-
-
-        }
-
-        private void DeleteOrder(Order order)
+        private void AlterOrder(Order order, SqlConnection connection)
         {
 
         }
 
-        private void AlterCustomer(Customer customer)
+        private void CreateOrder(Order order, SqlConnection connection)
+        {
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand("[SP_CreateOrder]", connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@CustomerID", 0));
+                cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
+                cmd.Parameters.Add(new SqlParameter("@DeliveryDate", order.DeliveryDate));
+                cmd.Parameters.Add(new SqlParameter("@Picked", order.Picked));
+
+
+
+
+                cmd.ExecuteNonQuery();
+
+
+            }
+
+
+            catch (SqlException e) { throw e; }
+
+
+        }
+
+        private void DeleteOrder(Order order, SqlConnection connection)
         {
 
         }
 
-        private void CreateCustomer(Customer customer)
+        private void AlterCustomer(Customer customer, SqlConnection connection)
         {
-      
+
+        }
+
+        private void CreateCustomer(Customer customer, SqlConnection connection)
+        {
+
             try
             {
                 SqlCommand cmd = new SqlCommand("[SP_CreateCustomer]", connection);
@@ -344,10 +341,25 @@ namespace Application
             catch (SqlException e) { throw e; }
         }
 
-        private void DeleteCustomer(Customer customer)
+        private void DeleteCustomer(Customer customer, SqlConnection connection)
         {
 
         }
-    
+
+        private void AlterSaleOrderLine(SaleOrderLine line,SqlConnection connection)
+        {
+
+        }
+        private void CreateSaleOrderLine(SaleOrderLine line, SqlConnection connection)
+        {
+
+        }
+        private void DeleteSaleOrderLine(SaleOrderLine line, SqlConnection connection)
+        {
+
+        }
+
+
+    }
 
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Order
+    public class Order : IHaveID
     {
 
         private List<SaleOrderLine> OrderLines = new List<SaleOrderLine>();

@@ -13,7 +13,7 @@ namespace Domain
         Create,
         Delete
     }
-    public class Customer
+    public class Customer : IHaveID
     {
         public int CustomerID;
         public string Name;
